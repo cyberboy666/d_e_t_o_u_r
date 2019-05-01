@@ -1,38 +1,23 @@
-# __d_e_t_o_u_r__
+# Raspberry Pi Frame Sampler
 
-## _an in-memory frame sampler/processor for rpi_
+Proof-of-concept video sampler made over a few beers with @langolierz 🍻
 
-<vector image coming soon>
+* Records pixel buffers from CSI Camera into RAM memory (`vector<ofPixel>`)
+* Playback can be reversed, sped up, slowed down
+* Max ~30 seconds with NTSE (640 x 480) in RGB24, when GPU split set to 128MB
+* Crashes / runs out of memory at < 200MB
 
-__d_e_t_o_u_r__ is  _raspberry pi_ video performance tool that samples `input` video frames ( from _piCaptureSd1_ ) into RAM and allows dynamic short-term access to them via _midi control_ 
+**Controls**
 
-<demo video coming sometime>
+* Spacebar to open CSI Camera
+* R key to toggle recording frames
+* C to clear recorded frames
+* < Left and Right > keys to set forwards or backwards
+* 1 - 9 keys to set speed
+* Up and Down keys to change capture resolution
 
-this is an open community project based on the [proof-of-concept] @[Autr] and i created and inspired by the [JonesFrameBuffer]
+**Installation**
 
-![flow1](./images/DETOUR-block.png)
+Raspberry Pi 3 with Raspbian Stretch, installed OF 0.10.1 dependencies
 
-### overview / features
-
-blahblahblah
-
-### hardware
-
-v1 will use the following:
-
-- raspberry pi 3b
-- piCaptureSd1 (or piCamera)
-- akai lpd8 midi controller (or otherwise)
-
-###
-
-<part of a ? open-diy-video-hardware ? project ..>
-
-### 
-
-<details on how to use, build, dev etc coming here>
-
-
-[proof-of-concept]: https://github.com/autr/rpi-frame-sampler
-[autr]: https://github.com/autr
-[JonesFrameBuffer]: http://www.experimentaltvcenter.org/jones-frame-buffer-prototype
+[Cross-compiling guide Armv6l](https://github.com/autr/pi/blob/master/of-cross-compile-guide.md)

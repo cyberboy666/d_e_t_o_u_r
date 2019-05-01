@@ -26,7 +26,7 @@ public:
 #ifdef TARGET_RASPBERRY_PI
     ofxOMXVideoGrabber vidGrabber;
 #else
-    ofVideoGrabber vidGrabber;
+    //ofVideoGrabber vidGrabber;
 #endif
     	ofxOMXCameraSettings settings;
     TerminalListener consoleListener;
@@ -46,7 +46,7 @@ public:
 // midi stuff 
 
 	void newMidiMessage(ofxMidiMessage& eventArgs);
-	void readMidiInput();
+	void readMidiInput(ofxMidiMessage& message);
 	ofxMidiIn midiIn;
 	std::vector<ofxMidiMessage> midiMessages;
 	std::size_t maxMessages = 10; //< max number of messages to keep track of
@@ -54,6 +54,7 @@ public:
 // detour methods
     ofPixels getFrameFromInput();
     ofPixels getFrameFromDetour();
+    void setDefaultFrame();
     void mixFrames(ofPixels in_frame, ofPixels detour_frame);
     void addFrameToDetour(ofPixels in_frame);
     void printState();
@@ -66,6 +67,7 @@ public:
     int getEndFrame();
     int subsetMod(int amount);
     float subsetModFloat(float amount);
+    string getMixSelectionName();
 
 // detour variables
 
@@ -88,10 +90,11 @@ public:
     ofPixels in_frame;
     ofPixels detour_frame;
     ofPixels out_frame;
+    ofPixels default_frame;
     ofTexture in_texture;
     ofTexture detour_texture;
     
-
+    bool showInfo;
     int current_detour;
     bool is_playing;
     bool is_recording;
@@ -102,8 +105,11 @@ public:
     int detour_end;
     bool memory_full;
     float mix_position;
+    float mix_selection;
     int sample_resolution;
     float sample_speed;
+
+    float mix_x2, mix_x3, mix_x4;
 
     bool is_delay;
     int delay_size;
