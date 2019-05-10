@@ -1,23 +1,36 @@
-# Raspberry Pi Frame Sampler
+# __d_e_t_o_u_r__
+## _an in-memory frame sampler/processor for rpi_	## _an in-memory frame sampler/processor for rpi_
+<vector image coming soon>	<vector image coming soon>
+__d_e_t_o_u_r__ is  _raspberry pi_ video performance tool that samples `input` video frames ( from _piCaptureSd1_ ) into RAM and allows dynamic short-term access to them via _midi control_ 	__d_e_t_o_u_r__ is  _raspberry pi_ video performance tool that samples `input` video frames ( from _piCaptureSd1_ ) into RAM and allows dynamic short-term access to them via _midi control_ 
+<demo video coming sometime>	<demo video coming sometime>
+this is an open community project based on the [proof-of-concept] @[Autr] and i created and inspired by the [JonesFrameBuffer]	this is an open community project based on the [proof-of-concept] @[Autr] and i created and inspired by the [JonesFrameBuffer]
 
-Proof-of-concept video sampler made over a few beers with @langolierz 🍻
 
-* Records pixel buffers from CSI Camera into RAM memory (`vector<ofPixel>`)
-* Playback can be reversed, sped up, slowed down
-* Max ~30 seconds with NTSE (640 x 480) in RGB24, when GPU split set to 128MB
-* Crashes / runs out of memory at < 200MB
+ ![flow1](./images/DETOUR-block.png)	![flow1](./images/DETOUR-block.png)
 
-**Controls**
 
-* Spacebar to open CSI Camera
-* R key to toggle recording frames
-* C to clear recorded frames
-* < Left and Right > keys to set forwards or backwards
-* 1 - 9 keys to set speed
-* Up and Down keys to change capture resolution
+ ### overview	### overview / features
 
-**Installation**
 
-Raspberry Pi 3 with Raspbian Stretch, installed OF 0.10.1 dependencies
+ blahblahblah	blahblahblah
 
-[Cross-compiling guide Armv6l](https://github.com/autr/pi/blob/master/of-cross-compile-guide.md)
+
+ ### hardware	### hardware
+v1 will use the following:	v1 will use the following:
+- raspberry pi 3b	- raspberry pi 3b
+- piCaptureSd1 (or piCamera)	- piCaptureSd1 (or piCamera)
+- akai lpd8 midi controller (or otherwise)	- akai lpd8 midi controller (or otherwise)
+
+
+ ###
+
+ <part of a ? open-diy-video-hardware ? project ..>
+
+ ### 
+
+ <details on how to use, build, dev etc coming here>
+
+
+
+ [proof-of-concept]: https://github.com/autr/rpi-frame-sampler	[proof-of-concept]: https://github.com/autr/rpi-frame-sampler
+[autr]: https://github.com/autr	[autr]: https://github.com/autr
