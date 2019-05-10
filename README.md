@@ -3,19 +3,20 @@
 ## _an in-memory frame sampler/processor for rpi_	
 
 <vector image coming soon>
+ 
 __d_e_t_o_u_r__ is  _raspberry pi_ video performance tool that samples `input` video frames ( from _piCaptureSd1_ ) into RAM and allows dynamic short-term access to them via _midi control_ 
-<demo video coming sometime>	<demo video coming sometime>
+<demo video coming sometime>
 this is an open community project based on the [proof-of-concept] @[Autr] and i created and inspired by the [JonesFrameBuffer]	
  ![flow1](./images/DETOUR-block.png)	![flow1](./images/DETOUR-block.png)
 
 
- ### overview	### overview / features
+ ### overview / features
 
 
  blahblahblah	blahblahblah
 
 
- ### hardware	### hardware
+### hardware
 v1 will use the following:	v1 will use the following:
 - raspberry pi 3b	- raspberry pi 3b
 - piCaptureSd1 (or piCamera)	- piCaptureSd1 (or piCamera)
@@ -32,5 +33,6 @@ v1 will use the following:	v1 will use the following:
 
 
 
- [proof-of-concept]: https://github.com/autr/rpi-frame-sampler	[proof-of-concept]: https://github.com/autr/rpi-frame-sampler
-[autr]: https://github.com/autr	[autr]: https://github.com/autr
+ [proof-of-concept]: https://github.com/autr/rpi-frame-sampler
+[autr]: https://github.com/autr
+[JonesFrameBuffer]: http://www.experimentaltvcenter.org/jones-frame-buffer-prototype
