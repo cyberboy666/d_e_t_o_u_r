@@ -7,7 +7,7 @@
 __d_e_t_o_u_r__ is  _raspberry pi_ video performance tool that samples `input` video frames ( from _piCaptureSd1_ ) into RAM and allows dynamic short-term access to them via _midi control_ 
 <demo video coming sometime>
 this is an open community project based on the [proof-of-concept] @[Autr] and i created and inspired by the [JonesFrameBuffer]	
- ![flow1](./images/DETOUR-block.png)	![flow1](./images/DETOUR-block.png)
+ ![flow1](./images/DETOUR-block.png)
 
 
  ### overview / features
