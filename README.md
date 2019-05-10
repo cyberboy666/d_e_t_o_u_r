@@ -1,5 +1,7 @@
 # __d_e_t_o_u_r__
-## _an in-memory frame sampler/processor for rpi_	## _an in-memory frame sampler/processor for rpi_
+
+## _an in-memory frame sampler/processor for rpi_	
+
 <vector image coming soon>	<vector image coming soon>
 __d_e_t_o_u_r__ is  _raspberry pi_ video performance tool that samples `input` video frames ( from _piCaptureSd1_ ) into RAM and allows dynamic short-term access to them via _midi control_ 	__d_e_t_o_u_r__ is  _raspberry pi_ video performance tool that samples `input` video frames ( from _piCaptureSd1_ ) into RAM and allows dynamic short-term access to them via _midi control_ 
 <demo video coming sometime>	<demo video coming sometime>
