@@ -2,12 +2,10 @@
 
 ## _an in-memory frame sampler/processor for rpi_	
 
-<vector image coming soon>	<vector image coming soon>
-__d_e_t_o_u_r__ is  _raspberry pi_ video performance tool that samples `input` video frames ( from _piCaptureSd1_ ) into RAM and allows dynamic short-term access to them via _midi control_ 	__d_e_t_o_u_r__ is  _raspberry pi_ video performance tool that samples `input` video frames ( from _piCaptureSd1_ ) into RAM and allows dynamic short-term access to them via _midi control_ 
+<vector image coming soon>
+__d_e_t_o_u_r__ is  _raspberry pi_ video performance tool that samples `input` video frames ( from _piCaptureSd1_ ) into RAM and allows dynamic short-term access to them via _midi control_ 
 <demo video coming sometime>	<demo video coming sometime>
-this is an open community project based on the [proof-of-concept] @[Autr] and i created and inspired by the [JonesFrameBuffer]	this is an open community project based on the [proof-of-concept] @[Autr] and i created and inspired by the [JonesFrameBuffer]
-
-
+this is an open community project based on the [proof-of-concept] @[Autr] and i created and inspired by the [JonesFrameBuffer]	
  ![flow1](./images/DETOUR-block.png)	![flow1](./images/DETOUR-block.png)
 
 
@@ -26,7 +24,7 @@ v1 will use the following:	v1 will use the following:
 
  ###
 
- <part of a ? open-diy-video-hardware ? project ..>
+ <part of a ? open-diy-video-hardware ? system ..>
 
  ### 
 
