@@ -11,14 +11,20 @@ void ofApp::setupPiCam() {
         settings.enableTexture = true; //default true
      
         settings.enablePixels = true;
-        settings.sensorMode = 7;
-        settings.ISO = 0;
-        settings.brightness = 50;
-        settings.contrast = 0;
-        settings.sharpness = 0;
-        settings.saturation = 0;
-        settings.autoISO = false;
-        settings.autoShutter = false;
+
+        //settings.sensorMode = 7;
+        //settings.whiteBalance ="Off";
+        //settings.exposurePreset ="Off";
+        //settings.whiteBalanceGainR = 1.0;
+        //settings.whiteBalanceGainB = 1.0;
+
+        //settings.ISO = 0;
+        //settings.brightness = 50;
+        //settings.contrast = 0;
+        //settings.sharpness = 0;
+        //settings.saturation = 0;
+        //settings.autoISO = false;
+        //settings.autoShutter = false;
         
         vidGrabber.setup(settings);
 
@@ -32,7 +38,7 @@ void ofApp::setupPiCam() {
 
 void ofApp::setDefaultFrame(){
     ofImage img;
-    img.allocate(camWidth, camHeight, OF_IMAGE_COLOR_ALPHA);
+    img.allocate(ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR_ALPHA);
     img.setColor(ofColor::red);
     img.update();
     default_frame = img.getPixels();
@@ -53,8 +59,8 @@ void ofApp::setup(){
     framerate = 25;
     ofSetFrameRate(framerate);
     
-    camWidth = 640;  // try to grab at this size.
-    camHeight = 480;
+    camWidth = 640; //720;   // try to grab at this size.
+    camHeight = 480; //576;
     //resizeW = camWidth;
     //resizeH = camHeight;
 
@@ -96,8 +102,8 @@ void ofApp::setup(){
 
     setDefaultFrame();
 
-    in_texture.allocate(camWidth, camHeight, GL_RGBA);
-    detour_texture.allocate(camWidth, camHeight, GL_RGBA);
+    in_texture.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    detour_texture.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
     
     //ofSetFullscreen(1);
     fbo.allocate(ofGetWidth(), ofGetHeight());
@@ -147,6 +153,7 @@ void ofApp::draw(){
 
     if(showInfo){printState();}
     //
+    checkMemory();
 }
 
 //--------------------------------------------------------------
@@ -156,8 +163,8 @@ ofPixels ofApp::getFrameFromInput(){
     ofPixels this_frame;
     int ww = vidGrabber.getWidth() ;
     int hh = vidGrabber.getHeight() ;
-    int rw = (float)ww * resize;
-    int rh = (float)hh * resize;
+    int rw = ofGetWidth();
+    int rh = ofGetHeight(); 
     
     
 #ifdef TARGET_RASPBERRY_PI
@@ -209,7 +216,12 @@ void ofApp::mixFrames(ofPixels in_frame, ofPixels detour_frame){
 
     in_texture.loadData(in_frame.getData(), ww, hh, GL_RGBA);
 
+    int www = detour_frame.getWidth();
+    int hhh = detour_frame.getHeight();
+
     detour_texture.loadData(detour_frame.getData(), ww, hh, GL_RGBA);
+
+    ofLog() << "ofGetWidth" << ofGetWidth() << "in_frame" << ww << "detour_frame" << www << "vidGrabber.getWidth()" << vidGrabber.getWidth();
 
 
      fbo.begin();
@@ -218,7 +230,7 @@ void ofApp::mixFrames(ofPixels in_frame, ofPixels detour_frame){
             shader.setUniform2f("u_resolution", ofGetWidth(), ofGetHeight());
             shader.setUniform1f("u_x0", mix_position);
             shader.setUniform1f("u_x1", mix_selection);
-            shader.setUniform1f("u_x2", mix_x2);
+            shader.setUniform1f("u_x2", effect_selection);
             shader.setUniform1f("u_x3", mix_x3);
             shader.setUniform1f("u_x4", mix_x4);
             shader.setUniformTexture("u_tex0", in_texture, in_texture.getTextureData().textureID);
@@ -265,6 +277,10 @@ void ofApp::keyPressed(int key){
             is_playing = !is_playing;
             break;
         case 'c':
+            detour_start = 0;
+            detour_end = 0;
+            detour_position_part = 0;
+            detour_position = 0;
             detours[current_detour].clear();
             break;
         case 'k':
@@ -320,10 +336,11 @@ void ofApp::keyPressed(int key){
             detour_position = subsetMod(detour_position - 1);
             detour_position_part = (float)detour_position;
             break;
-        /*case 'p':
+        case 'p':
             detour_position = subsetMod(detour_position + 1);
             detour_position_part = (float)detour_position;
             break;
+        /*
         case 'p':
             vidGrabber.setup(settings);
             //setupPiCam();
@@ -338,32 +355,40 @@ void ofApp::keyPressed(int key){
             ofExit();
             break;
         case '0':
+
             current_detour = 0;
             detour_start = 0;
             detour_end = 0;
             detour_position_part = 0;
             detour_position = 0;
+
             break;
         case '1':
+
             current_detour = 1;
             detour_start = 0;
             detour_end = 0;
             detour_position_part = 0;
             detour_position = 0;
+  
             break;
         case '2':
+
             current_detour = 2;
             detour_start = 0;
             detour_end = 0;
             detour_position_part = 0;
             detour_position = 0;
+
             break;
         case '3':
+
             current_detour = 3;
             detour_start = 0;
             detour_end = 0;
             detour_position_part = 0;
             detour_position = 0;
+
             break;
     }
   
@@ -378,7 +403,8 @@ void ofApp::setStart(float value){
 }
 
 void ofApp::setEnd(float value){
-    detour_end = detour_start + 1 + (int)floor(value*((float)detours[current_detour].size() - detour_start -1));
+    int new_end = detour_start + 1 + (int)floor(value*((float)detours[current_detour].size() - detour_start -1));
+    detour_end = MIN(new_end, detours[current_detour].size() - 1);
     if(detour_position > detour_end){
         detour_position = detour_end;
         detour_position_part = (float)detour_position;
@@ -386,7 +412,8 @@ void ofApp::setEnd(float value){
 }
 
 void ofApp::setPosition(float value){
-    detour_position = detour_start + (int)floor(value*(float)getEndFrame());
+    int new_position = detour_start + (int)floor(value*(float)getEndFrame());
+    detour_position = MIN(new_position, getEndFrame());
 }
 
 void ofApp::setSpeed(float value){
@@ -396,12 +423,10 @@ void ofApp::setSpeed(float value){
 
 void ofApp::readMidiInput(ofxMidiMessage& message){
     
-    //for(unsigned int i = 0; i < midiMessages.size(); ++i){
-                
-        //ofxMidiMessage &message = midiMessages[i];
         if(message.status == MIDI_NOTE_ON){
             switch(message.pitch){
                 case 36:
+                    
                     keyPressed((int)'0');
                     break;
                 case 37:
@@ -411,7 +436,7 @@ void ofApp::readMidiInput(ofxMidiMessage& message){
                     keyPressed((int)'2');
                     break;
                 case 39:
-                    keyPressed((int)'i');
+                    keyPressed((int)'3');
                     break;
                 case 40:
                     keyPressed((int)'r');
@@ -423,8 +448,7 @@ void ofApp::readMidiInput(ofxMidiMessage& message){
                     keyPressed((int)'c');
                     break;
                 case 43:
-                    ofLog() << "pressed once";
-                    //keyPressed((int)'p');
+                    keyPressed((int)'w');
                     break;        
             }
         }
@@ -433,11 +457,12 @@ void ofApp::readMidiInput(ofxMidiMessage& message){
             normValue = (float)message.value / (float)127;
             switch(message.control){
                 case 1:
+                    mix_position = normValue;
+                    break;
+
+                case 2:
                     if(is_playing){ setSpeed(normValue);  }
                     else { setPosition(normValue); }
-                    break;
-                case 2:
-                    mix_position = normValue;
                     break;
                 case 3:
                     setStart(normValue);
@@ -449,7 +474,7 @@ void ofApp::readMidiInput(ofxMidiMessage& message){
                     mix_selection = normValue;
                     break;
                 case 6:
-                    mix_x2 = normValue;
+                    effect_selection = normValue;
                     break;
                 case 7:
                     mix_x3 = normValue;
@@ -457,7 +482,36 @@ void ofApp::readMidiInput(ofxMidiMessage& message){
                 case 8:
                     mix_x4 = normValue;
                     break; 
-            }         
+            }
+        } 
+        else if(message.status == MIDI_PROGRAM_CHANGE){
+            switch(message.value){
+                case 0:
+                    keyPressed((int)'i');
+                    break;
+                case 1:
+                    //keyPressed((int)'a');
+                    break;
+                case 2:
+                    //keyPressed((int)'a');
+                    break; 
+                case 3:
+                    //keyPressed((int)'a');
+                    break;
+                case 4:
+                    //keyPressed((int)'a');
+                    break;
+                case 5:
+                    keyPressed((int)'a');
+                   break;
+                case 6:
+                    keyPressed((int)'z');
+                    break;
+                case 7:
+                    keyPressed((int)'x');
+                    break; 
+            }   
+    
         }
         
         //midiMessages.erase(midiMessages.begin());    
@@ -481,6 +535,7 @@ void ofApp::printState(){
     info << "memory_full: " << memory_full << "\n";
     info << "mix_position: " << mix_position << "\n";
     info << "mix_selection: " << getMixSelectionName() << "\n";
+    info << "effect_selection: " << getEffectSelectionName() << "\n";
     //info << "sample_resolution: " << sample_resolution << "\n";
     //info << "sample_speed: " << sample_speed << "\n";
     info << "is_delay: " << is_delay << "\n";
@@ -488,6 +543,12 @@ void ofApp::printState(){
 
 	//info <<	filterCollection.filterList << "\n";
     ofDrawBitmapStringHighlight(info.str(), 50, 50, ofColor::black, ofColor::yellow);
+}
+
+void ofApp::checkMemory(){
+    int totalFrames = detours[0].size() + detours[1].size() + detours[2].size() + detours[3].size();
+    if(totalFrames > 500){memory_full = true;}
+    else{memory_full = false;}
 }
 
 string ofApp::getMixSelectionName(){
@@ -499,10 +560,20 @@ string ofApp::getMixSelectionName(){
     return "nothing";
 }
 
+string ofApp::getEffectSelectionName(){
+    if(0.0 <= effect_selection && effect_selection < 0.2 ){return "none";}
+    else if(0.2 <= effect_selection && effect_selection < 0.4 ){return "zoom";}
+    else if(0.4 <= effect_selection && effect_selection < 0.6 ){return "colour";}
+    else if(0.6 <= effect_selection && effect_selection < 0.8 ){return "rotate";}
+    else if(0.8 <= effect_selection && effect_selection <= 1.0 ){return "nothing_yet";}
+    return "nothing";
+}
+
 int ofApp::getEndFrame(){
     int end = detours[current_detour].size() - 1;
     if(detour_end > 0){end = detour_end;}
-    return end;
+
+    return MAX(end,0);
 }
 
 int ofApp::subsetMod(int amount){

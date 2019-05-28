@@ -58,6 +58,7 @@ public:
     void mixFrames(ofPixels in_frame, ofPixels detour_frame);
     void addFrameToDetour(ofPixels in_frame);
     void printState();
+    void checkMemory();
 
     void setStart(float value);
     void setEnd(float value);
@@ -68,6 +69,7 @@ public:
     int subsetMod(int amount);
     float subsetModFloat(float amount);
     string getMixSelectionName();
+    string getEffectSelectionName();
 
 // detour variables
 
@@ -106,6 +108,7 @@ public:
     bool memory_full;
     float mix_position;
     float mix_selection;
+    float effect_selection;
     int sample_resolution;
     float sample_speed;
 

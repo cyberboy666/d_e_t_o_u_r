@@ -92,10 +92,10 @@ vec4 zoom(sampler2D tex, vec2 pos){
     vec4 texColourZoom;
     vec2 center;
     //center = vec2(u_x3 / u_resolution.x, u_x4 / u_resolution.y);
-    center = vec2(u_x3, u_x4);
+    center = vec2(u_x4, 0.5);
 
-    pos.x = (pos.x - center.x)*(0.5 / u_x2) + center.x;
-    pos.y = (pos.y - center.y)*(0.5 / u_x2) + center.y;
+    pos.x = (pos.x - center.x)*(0.5 / u_x3) + center.x;
+    pos.y = (pos.y - center.y)*(0.5 / u_x3) + center.y;
     if((pos.x < 0.0)||(pos.y < 0.0)||(pos.x > 1.0)||(pos.y > 1.0)){
         texColourZoom = vec4(0.0);
     }
@@ -105,14 +105,50 @@ vec4 zoom(sampler2D tex, vec2 pos){
     return texColourZoom;
 }
 
+/* memory runs out when tryign this
+vec4 rotate(sampler2D tex, vec2 pos){
+
+    vec4 texColourRotate;
+    vec2 center;
+    //center = vec2(u_x3 / u_resolution.x, u_x4 / u_resolution.y);
+    center = vec2(u_x4, 0.5);
+
+    float r = distance(center, pos);
+    float a = atan(pos.x - center.x, pos.y - center.y);
+
+    pos.x = r * cos(a + 2.0 * 3.141592 * u_x3) + 0.5;
+    pos.y = r * sin(a + 2.0 * 3.141592 * u_x3) + 0.5;
+    
+    if((pos.x < 0.0)||(pos.y < 0.0)||(pos.x > 1.0)||(pos.y > 1.0)){
+        texColourRotate = vec4(0.0);
+    }
+    else{
+        texColourRotate = texture2D(tex, pos);
+    }
+    return texColourRotate;
+}
+*/
+
 void main() {
 
     vec2 pos = v_texcoord;
+    vec4 texColour0;
+    vec4 texColour1;
 
-    //vec4 texColour0 = texture2D(u_tex0, v_texcoord);
-    //vec4 texColour1 = texture2D(u_tex1, v_texcoord);
-    vec4 texColour0 = zoom(u_tex0, v_texcoord);
-    vec4 texColour1 = zoom(u_tex1, v_texcoord);
+    if(0.2 <= u_x2 && u_x2 <= 0.4 ) {
+        texColour0 = zoom(u_tex0, v_texcoord);
+        texColour1 = zoom(u_tex1, v_texcoord);
+        }
+    //else if(0.6 <= u_x2 && u_x2 <= 0.8 ) {
+        //texColour0 = rotate(u_tex0, v_texcoord);
+        //texColour1 = rotate(u_tex1, v_texcoord);
+        //}
+    else{
+        texColour0 = texture2D(u_tex0, v_texcoord);
+        texColour1 = texture2D(u_tex1, v_texcoord);
+        }
+
+
     vec4 colour;
 
     if(0.0 <= u_x1 && u_x1 <= 0.2 ) {colour = mixVeritcalWipe(texColour0, texColour1);}
@@ -123,17 +159,20 @@ void main() {
 
 
 //hue and satuation displacement
-//---------
-   /* vec3 hsv = rgb2hsv(colour.rgb);
+
+    if(0.4 <= u_x2 && u_x2 <= 0.6 ) {
+    vec3 hsv = rgb2hsv(colour.rgb);
     //hsv.x += u_x2 - 0.5;
-    hsv.y += u_x3 - 0.5;
+    hsv.y = 2.0*u_x3* hsv.y;
     //hsv.z += u_x2 - 0.5;
-    //hsv.x += -0.2;
+    hsv.x = 2.0*u_x4* hsv.x;
     vec3 rgb = hsv2rgb(hsv.xyz);
     colour = vec4(rgb, colour.a);
-*/
-//zoom displacement
-//-------
+        }
+//---------
+
+
+
 
 
     gl_FragColor = colour; 
